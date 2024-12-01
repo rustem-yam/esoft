@@ -1,2 +1,2 @@
 port: :4000
-db: root:password@tcp(realty_db:3307)/realty
+db: root:password@tcp(realty_db:3306)/realty
