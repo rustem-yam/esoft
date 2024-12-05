@@ -2,9 +2,10 @@ import { Card, CardContent, CardHeader, Chip, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { entities } from "app/entities";
 import { useMemo } from "react";
+import { ClientDtoWithType } from "models/clients";
 
 type Props = {
-  data: { [key: string]: string };
+  data: ClientDtoWithType;
 };
 
 function SearchItem(props: Props) {
@@ -15,7 +16,7 @@ function SearchItem(props: Props) {
     () =>
       Object.keys(data)
         .filter((key) => key.indexOf(entities[data.type]?.hFieldSubstr) !== -1)
-        .map((key) => data[key]),
+        .map((key) => data[key as keyof ClientDtoWithType]),
     [data]
   );
   const keysBody = useMemo(
@@ -59,10 +60,10 @@ function SearchItem(props: Props) {
                   </Typography> */}
       {/* <Chip color="primary" sx={{ float: "right" }} /> */}
       <CardContent sx={{ flexGrow: 1 }}>
-        {keysBody.map((key: string) => (
+        {keysBody.map((key) => (
           <Typography key={data.id + key}>
             <b>{key}: </b>
-            {data[key]}
+            {data[key as keyof ClientDtoWithType]}
           </Typography>
         ))}
       </CardContent>

@@ -36,6 +36,10 @@ type (
 	GetClientResponse struct {
 		Client *Client `json:"client"`
 	}
+
+	GetClientsResponse struct {
+    Clients []Client `json:"clients"`
+}
 )
 
 func (req CreateClientRequest) Validate() error {

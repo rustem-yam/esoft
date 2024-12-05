@@ -10,13 +10,13 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../../app/store";
-import styles from "./index.module.css";
 import { useDebouncedCallback } from "use-debounce";
 import { entities } from "app/entities";
 
 import { tstore } from "app/store";
 import SearchItem from "./SearchItem";
+import { useGetClientsQuery } from "api/common/clientsApi";
+import { ClientDtoWithType } from "models/clients";
 
 function Search() {
   // const count = useAppSelector(selectCount);
@@ -24,7 +24,10 @@ function Search() {
 
   const navigate = useNavigate();
 
-  const [cards, setCards] = useState(tstore); // dynamic cards
+  const { data: clients } = useGetClientsQuery();
+  const [cards, setCards] = useState<ClientDtoWithType[]>(
+    clients ? clients.map((client) => ({ ...client, type: "clients" })) : []
+  ); // dynamic cards
   const [isActionsOpened, setActionsOpened] = useState(false);
   const [filters, setFilters] = useState<string[]>([]);
   const [search, setSearch] = useState<string>("");
@@ -42,7 +45,7 @@ function Search() {
         .filter((el) => filters.includes(el.type) || !filters.length)
         .filter((el) =>
           Object.values(el).reduce(function (previous, now) {
-            return previous || now.indexOf(search) != -1;
+            return previous || String(now).indexOf(search) != -1;
           }, false)
         )
     );

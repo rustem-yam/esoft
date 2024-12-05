@@ -54,6 +54,25 @@ func (s *Server) GetClient(w http.ResponseWriter, r *http.Request) {
 	s.Json(response, http.StatusOK, w)
 }
 
+
+// GetClients godoc
+// @Summary GetClients.
+// @Description Получить список всех клиентов.
+// @Tags Clients
+// @Success 200 {array} domain.Client
+// @Failure 500 {object} errdomain.AppError
+// @Router /api/clients [get]
+func (s *Server) GetClients(w http.ResponseWriter, r *http.Request) {
+	response, err := s.core.GetClients(r.Context())
+	if err != nil {
+		s.ParseError(err, w)
+		return
+	}
+
+	s.Json(response, http.StatusOK, w)
+}
+
+
 // UpdateClient godoc
 // @Summary UpdateClient.
 // @Description

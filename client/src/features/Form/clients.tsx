@@ -1,9 +1,12 @@
+import { useAddClientMutation } from "api/common/clientsApi";
 import Submit from "features/Reused/Submit";
 import { FormContainer, TextFieldElement } from "react-hook-form-mui";
 
 function ClientForm() {
+  const [addClient] = useAddClientMutation();
   const handleSubmit = (data: any) => {
     console.log(data);
+    addClient(data);
   };
   return (
     <FormContainer
