@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/jackc/pgx/v5"
+	"database/sql"
 
 	"github.com/rustem-yam/esoft/internal/domain"
 	"github.com/rustem-yam/esoft/internal/domain/errdomain"
@@ -15,19 +15,26 @@ func (c *Core) CreateClient(ctx context.Context, req *domain.CreateClientRequest
 		return nil, err
 	}
 
+	c.logger.Info("creating clientttt")
+
 	if req.Email != nil {
 		err := c.db.CheckClientEmail(ctx, *req.Email)
-		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		c.logger.Info("Checking client email")
+		
+		if err != nil && !errors.Is(err, sql.ErrNoRows) {
 			return nil, errdomain.NewInternalError(err.Error())
 		}
+		
 		if err == nil {
 			return nil, errdomain.NewUserError("Email already taken.", "email")
 		}
 	}
+	
 
 	if req.Telephone != nil {
 		err := c.db.CheckClientTelephone(ctx, *req.Telephone)
-		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		c.logger.Info("error clienttt2")
+		if err != nil && !errors.Is(err, sql.ErrNoRows) {
 			return nil, errdomain.NewInternalError(err.Error())
 		}
 		if err == nil {
@@ -37,6 +44,7 @@ func (c *Core) CreateClient(ctx context.Context, req *domain.CreateClientRequest
 
 	id, err := c.db.CreateClient(ctx, req)
 	if err != nil {
+		c.logger.Info("error clienttt3")
 		return nil, errdomain.NewInternalError(err.Error())
 	}
 

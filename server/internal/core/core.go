@@ -18,7 +18,7 @@ type Core struct {
 func NewCore(l *zap.Logger, db *sql.DB, c *config.Config) *Core {
 	return &Core{
 		logger: l,
-		db:     &database.Database{Conn: db},
+		db:     &database.Database{Conn: db, Logger: l},
 		cfg:    c,
 	}
 }

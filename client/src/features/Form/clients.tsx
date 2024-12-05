@@ -23,21 +23,21 @@ function ClientForm() {
         fullWidth
         sx={{ my: 1 }}
         name="name"
-        label="Last Name"
+        label="First Name"
         required
         control={control}
         error={!!errors.name}
-        helperText={errors.name ? "Last name is required" : ""}
+        helperText={errors.name ? "First name is required" : ""}
       />
       <TextFieldElement
         fullWidth
         sx={{ my: 1 }}
         name="surname"
-        label="First Name"
+        label="Last Name"
         required
         control={control}
         error={!!errors.surname}
-        helperText={errors.surname ? "First name is required" : ""}
+        helperText={errors.surname ? "Last name is required" : ""}
       />
       <TextFieldElement
         fullWidth

@@ -4,10 +4,12 @@ import (
 	"database/sql"
 
 	_ "github.com/go-sql-driver/mysql"
+	"go.uber.org/zap"
 )
 
 type Database struct {
-	Conn *sql.DB
+	Conn   *sql.DB
+	Logger *zap.Logger
 }
 
 func NewMySQLConnection(connString string) (*sql.DB, error) {

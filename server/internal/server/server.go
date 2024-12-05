@@ -8,8 +8,6 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/jackc/pgx/v5/pgxpool"
-
 	"github.com/rustem-yam/esoft/internal/config"
 	"github.com/rustem-yam/esoft/internal/core"
 	"github.com/rustem-yam/esoft/internal/domain/errdomain"
@@ -22,7 +20,7 @@ type Server struct {
 	logger *zap.Logger
 	cfg    *config.Config
 	core   *core.Core
-	db     *pgxpool.Pool
+	db     *database.Database
 }
 
 func enableCORS(next http.Handler) http.Handler {
@@ -46,13 +44,13 @@ func New(l *zap.Logger, c *config.Config) (*Server, error) {
 		cfg:    c,
 	}
 
-	conn, err := database.NewMySQLConnection(s.cfg.DatabaseConnection)
+	db, err := database.NewMySQLConnection(s.cfg.DatabaseConnection)
 	if err != nil {
 		return nil, err
 	}
 
 	l.Info("Connected to database", zap.String("conn", c.DatabaseConnection))
-	s.core = core.NewCore(l, conn, c)
+	s.core = core.NewCore(l, db, c)
 
 	return s, nil
 }
