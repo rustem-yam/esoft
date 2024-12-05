@@ -3,7 +3,7 @@ package app
 import (
 	"fmt"
 
-	"github.com/bouhartsev/infinity_realty/internal/config"
+	"github.com/rustem-yam/esoft/internal/config"
 
 	"github.com/ilyakaznacheev/cleanenv"
 	"go.uber.org/zap"

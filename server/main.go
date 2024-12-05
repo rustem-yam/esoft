@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/bouhartsev/infinity_realty/internal/app"
+	"github.com/rustem-yam/esoft/internal/app"
 )
 
 // @title Esoft API

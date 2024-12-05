@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/bouhartsev/infinity_realty/internal/domain"
+	"github.com/rustem-yam/esoft/internal/domain"
 )
 
 func (d *Database) UpdateClient(ctx context.Context, req *domain.UpdateClientRequest) error {

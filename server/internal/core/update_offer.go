@@ -3,8 +3,8 @@ package core
 import (
 	"context"
 
-	"github.com/bouhartsev/infinity_realty/internal/domain"
-	"github.com/bouhartsev/infinity_realty/internal/domain/errdomain"
+	"github.com/rustem-yam/esoft/internal/domain"
+	"github.com/rustem-yam/esoft/internal/domain/errdomain"
 )
 
 func (c *Core) UpdateOffer(ctx context.Context, req *domain.UpdateOfferRequest) (*domain.GetOfferResponse, error) {

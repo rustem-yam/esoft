@@ -1,4 +1,4 @@
-module github.com/bouhartsev/infinity_realty
+module github.com/rustem-yam/esoft
 
 go 1.19
 

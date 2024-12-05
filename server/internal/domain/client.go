@@ -3,7 +3,7 @@ package domain
 import (
 	"regexp"
 
-	"github.com/bouhartsev/infinity_realty/internal/domain/errdomain"
+	"github.com/rustem-yam/esoft/internal/domain/errdomain"
 )
 
 type (

@@ -5,8 +5,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/bouhartsev/infinity_realty/internal/config"
-	"github.com/bouhartsev/infinity_realty/internal/persistence/database"
+	"github.com/rustem-yam/esoft/internal/config"
+	"github.com/rustem-yam/esoft/internal/persistence/database"
 )
 
 type Core struct {

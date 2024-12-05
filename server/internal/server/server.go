@@ -10,10 +10,10 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/bouhartsev/infinity_realty/internal/config"
-	"github.com/bouhartsev/infinity_realty/internal/core"
-	"github.com/bouhartsev/infinity_realty/internal/domain/errdomain"
-	"github.com/bouhartsev/infinity_realty/internal/persistence/database"
+	"github.com/rustem-yam/esoft/internal/config"
+	"github.com/rustem-yam/esoft/internal/core"
+	"github.com/rustem-yam/esoft/internal/domain/errdomain"
+	"github.com/rustem-yam/esoft/internal/persistence/database"
 
 	"go.uber.org/zap"
 )

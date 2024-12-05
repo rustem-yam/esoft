@@ -3,7 +3,7 @@ package core
 import (
 	"context"
 
-	"github.com/bouhartsev/infinity_realty/internal/domain/errdomain"
+	"github.com/rustem-yam/esoft/internal/domain/errdomain"
 )
 
 func (c *Core) DeleteOffer(ctx context.Context, id int) error {

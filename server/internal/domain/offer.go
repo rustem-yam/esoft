@@ -1,6 +1,6 @@
 package domain
 
-import "github.com/bouhartsev/infinity_realty/internal/domain/errdomain"
+import "github.com/rustem-yam/esoft/internal/domain/errdomain"
 
 type (
 	Offer struct {

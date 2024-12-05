@@ -1,6 +1,6 @@
 package app
 
-import "github.com/bouhartsev/infinity_realty/internal/server"
+import "github.com/rustem-yam/esoft/internal/server"
 
 func (a *application) Run() error {
 	s, err := server.New(a.logger, a.cfg)

@@ -2,7 +2,7 @@ package database
 
 import (
 	"context"
-	"github.com/bouhartsev/infinity_realty/internal/domain"
+	"github.com/rustem-yam/esoft/internal/domain"
 )
 
 func (d *Database) GetClients(ctx context.Context) ([]domain.Client, error) {
