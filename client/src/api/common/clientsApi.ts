@@ -1,9 +1,13 @@
 import { rtkQueryApi } from "api/rtkQueryApi";
-import { AddClientMutationRequestDto, ClientDto } from "models/clients";
+import {
+  AddClientMutationRequestDto,
+  ClientDto,
+  GetClientsQueryRequestDto,
+} from "models/clients";
 
 const clientsApi = rtkQueryApi.injectEndpoints({
   endpoints: (build) => ({
-    getClients: build.query<ClientDto[], void>({
+    getClients: build.query<GetClientsQueryRequestDto, void>({
       query: () => ({
         url: "/clients",
         method: "GET",

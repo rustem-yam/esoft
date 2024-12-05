@@ -7,8 +7,14 @@ type ClientDto = {
   telephone?: string;
 };
 
-type ClientDtoWithType = ClientDto & { type: string };
+type GetClientsQueryRequestDto = {
+  clients: ClientDto[];
+};
 
 type AddClientMutationRequestDto = Omit<ClientDto, "id">;
 
-export type { ClientDto, ClientDtoWithType, AddClientMutationRequestDto };
+export type {
+  ClientDto,
+  GetClientsQueryRequestDto,
+  AddClientMutationRequestDto,
+};
