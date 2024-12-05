@@ -6,7 +6,7 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
-	"github.com/bouhartsev/infinity_realty/internal/domain"
+	"github.com/rustem-yam/esoft/internal/domain"
 )
 
 // CreateRealtor godoc

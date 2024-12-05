@@ -8,6 +8,11 @@ var (
 		Code:     "client:not_found",
 		HttpCode: http.StatusNotFound,
 	}
+	ClientsNotFoundError = AppError{
+		Message:  "Clients not found.",
+		Code:     "clients:not_found",
+		HttpCode: http.StatusNotFound,
+	}
 	ClientHasNeedsError = AppError{
 		Message:  "Client has needs dependency.",
 		Code:     "client:has_needs",

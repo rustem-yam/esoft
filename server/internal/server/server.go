@@ -8,12 +8,10 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/jackc/pgx/v5/pgxpool"
-
-	"github.com/bouhartsev/infinity_realty/internal/config"
-	"github.com/bouhartsev/infinity_realty/internal/core"
-	"github.com/bouhartsev/infinity_realty/internal/domain/errdomain"
-	"github.com/bouhartsev/infinity_realty/internal/persistence/database"
+	"github.com/rustem-yam/esoft/internal/config"
+	"github.com/rustem-yam/esoft/internal/core"
+	"github.com/rustem-yam/esoft/internal/domain/errdomain"
+	"github.com/rustem-yam/esoft/internal/persistence/database"
 
 	"go.uber.org/zap"
 )
@@ -22,7 +20,22 @@ type Server struct {
 	logger *zap.Logger
 	cfg    *config.Config
 	core   *core.Core
-	db     *pgxpool.Pool
+	db     *database.Database
+}
+
+func enableCORS(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }
 
 func New(l *zap.Logger, c *config.Config) (*Server, error) {
@@ -31,14 +44,13 @@ func New(l *zap.Logger, c *config.Config) (*Server, error) {
 		cfg:    c,
 	}
 
-	conn, err := database.NewMySQLConnection(s.cfg.DatabaseConnection)
-
+	db, err := database.NewMySQLConnection(s.cfg.DatabaseConnection)
 	if err != nil {
 		return nil, err
 	}
 
 	l.Info("Connected to database", zap.String("conn", c.DatabaseConnection))
-	s.core = core.NewCore(l, conn, c)
+	s.core = core.NewCore(l, db, c)
 
 	return s, nil
 }
@@ -46,9 +58,11 @@ func New(l *zap.Logger, c *config.Config) (*Server, error) {
 func (s *Server) Run() error {
 	router := s.initRoutes()
 
+	handler := enableCORS(router)
+
 	httpServer := &http.Server{
 		Addr:    s.cfg.AppPort,
-		Handler: router,
+		Handler: handler,
 	}
 
 	// Graceful Shutdown

@@ -5,8 +5,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/bouhartsev/infinity_realty/internal/config"
-	"github.com/bouhartsev/infinity_realty/internal/persistence/database"
+	"github.com/rustem-yam/esoft/internal/config"
+	"github.com/rustem-yam/esoft/internal/persistence/database"
 )
 
 type Core struct {
@@ -18,7 +18,7 @@ type Core struct {
 func NewCore(l *zap.Logger, db *sql.DB, c *config.Config) *Core {
 	return &Core{
 		logger: l,
-		db:     &database.Database{Conn: db},
+		db:     &database.Database{Conn: db, Logger: l},
 		cfg:    c,
 	}
 }

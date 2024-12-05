@@ -3,7 +3,7 @@ package domain
 import (
 	"regexp"
 
-	"github.com/bouhartsev/infinity_realty/internal/domain/errdomain"
+	"github.com/rustem-yam/esoft/internal/domain/errdomain"
 )
 
 type (
@@ -36,6 +36,10 @@ type (
 	GetClientResponse struct {
 		Client *Client `json:"client"`
 	}
+
+	GetClientsResponse struct {
+    Clients []Client `json:"clients"`
+}
 )
 
 func (req CreateClientRequest) Validate() error {

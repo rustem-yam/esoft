@@ -10,13 +10,14 @@ import (
 	"github.com/rustem-yam/esoft/internal/domain/errdomain"
 )
 
-func (c *Core) GetClient(ctx context.Context, id int) (*domain.GetClientResponse, error) {
-	user, err := c.db.GetClient(ctx, id)
+func (c *Core) GetClients(ctx context.Context) (*domain.GetClientsResponse, error) {
+	clients, err := c.db.GetClients(ctx)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, errdomain.ClientNotFoundError
+			return nil, errdomain.ClientsNotFoundError
 		}
 		return nil, errdomain.NewInternalError(err.Error())
 	}
-	return &domain.GetClientResponse{Client: user}, nil
+
+	return &domain.GetClientsResponse{Clients: clients}, nil
 }

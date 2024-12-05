@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/bouhartsev/infinity_realty/internal/domain/errdomain"
+	"github.com/rustem-yam/esoft/internal/domain/errdomain"
 )
 
 func (s *Server) ReadJson(data any, r *http.Request, w http.ResponseWriter) error {

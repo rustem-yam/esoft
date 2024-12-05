@@ -9,6 +9,7 @@ import (
 func (s *Server) initRoutes() *httprouter.Router {
 	r := httprouter.New()
 
+	r.HandlerFunc(http.MethodGet, "/api/clients", s.GetClients)
 	r.HandlerFunc(http.MethodPost, "/api/clients", s.CreateClient)
 	r.HandlerFunc(http.MethodGet, "/api/clients/:client_id", s.GetClient)
 	r.HandlerFunc(http.MethodPatch, "/api/clients/:client_id", s.UpdateClient)

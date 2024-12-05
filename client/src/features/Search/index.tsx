@@ -10,21 +10,22 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../../app/store";
-import styles from "./index.module.css";
 import { useDebouncedCallback } from "use-debounce";
 import { entities } from "app/entities";
-
-import { tstore } from "app/store";
 import SearchItem from "./SearchItem";
+import { useGetClientsQuery } from "api/common/clientsApi";
 
 function Search() {
-  // const count = useAppSelector(selectCount);
-  // const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
 
-  const [cards, setCards] = useState(tstore); // dynamic cards
+  const { data: clientsResponse = { clients: [] } } = useGetClientsQuery();
+
+  const allData = useMemo(() => {
+    return {
+      clients: clientsResponse.clients,
+    };
+  }, [clientsResponse]);
+
   const [isActionsOpened, setActionsOpened] = useState(false);
   const [filters, setFilters] = useState<string[]>([]);
   const [search, setSearch] = useState<string>("");
@@ -36,22 +37,36 @@ function Search() {
     setFilters(newFilters);
   };
 
-  useEffect(() => {
-    setCards(
-      tstore
-        .filter((el) => filters.includes(el.type) || !filters.length)
-        .filter((el) =>
-          Object.values(el).reduce(function (previous, now) {
-            return previous || now.indexOf(search) != -1;
-          }, false)
-        )
+  const filteredCards = useMemo(() => {
+    const combinedData = Object.entries(allData)
+      .filter(([key]) => filters.includes(key) || !filters.length)
+      .flatMap(([key, data]) =>
+        data.map((item) => ({
+          ...item,
+          _type: key,
+        }))
+      );
+
+    return combinedData.filter((item) =>
+      Object.values(item).some((value) =>
+        String(value).toLowerCase().includes(search.toLowerCase())
+      )
     );
-  }, [filters, search]);
+  }, [allData, filters, search]);
 
   const handleSearch = useDebouncedCallback((newSearch: string) => {
-    // console.log(newSearch); // make request
     setSearch(newSearch);
   }, 500);
+
+  const toggleButtons = useMemo(
+    () =>
+      Object.keys(allData).map((key) => (
+        <ToggleButton key={key} value={key}>
+          {entities[key]?.label || key}
+        </ToggleButton>
+      )),
+    [allData, entities]
+  );
 
   const actionButtons = useMemo(
     () =>
@@ -63,30 +78,18 @@ function Search() {
           onClick={() => navigate("/form/" + key)}
         />
       )),
-    [entities]
-  );
-
-  const toggleButtons = useMemo(
-    () =>
-      Object.keys(entities)
-        .reverse()
-        .map((key: string) => (
-          <ToggleButton key={key} value={key} color={entities[key].color}>
-            {entities[key].label}
-          </ToggleButton>
-        )),
-    [entities]
+    [entities, navigate]
   );
 
   return (
     <>
-      {/* TODO: Add UP button */}
       <TextField
         label="Search"
         id="search-input"
         fullWidth
         onChange={(e) => handleSearch(e.target.value)}
       />
+
       <ToggleButtonGroup
         value={filters}
         onChange={handleFilters}
@@ -95,13 +98,19 @@ function Search() {
       >
         {toggleButtons}
       </ToggleButtonGroup>
+
       <Grid container spacing={4}>
-        {cards.map((card) => (
-          <Grid item key={card.id} xs={12} sm={6} md={4}>
-            <SearchItem data={card} />
-          </Grid>
-        ))}
+        {filteredCards.length === 0 ? (
+          <div>No results found</div>
+        ) : (
+          filteredCards.map((card) => (
+            <Grid item key={card.id} xs={12} sm={6} md={4}>
+              <SearchItem data={card} type={card._type} />
+            </Grid>
+          ))
+        )}
       </Grid>
+
       <Backdrop open={isActionsOpened} />
       <SpeedDial
         ariaLabel="Add"
