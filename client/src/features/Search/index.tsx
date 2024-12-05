@@ -26,7 +26,9 @@ function Search() {
 
   const { data: clients } = useGetClientsQuery();
   const [cards, setCards] = useState<ClientDtoWithType[]>(
-    clients ? clients.map((client) => ({ ...client, type: "clients" })) : []
+    clients && clients.length
+      ? clients.map((client) => ({ ...client, type: "clients" }))
+      : []
   ); // dynamic cards
   const [isActionsOpened, setActionsOpened] = useState(false);
   const [filters, setFilters] = useState<string[]>([]);

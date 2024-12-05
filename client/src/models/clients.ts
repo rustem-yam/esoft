@@ -4,7 +4,7 @@ type ClientDto = {
   surname: string;
   patronymic: string;
   email?: string;
-  phone?: string;
+  telephone?: string;
 };
 
 type ClientDtoWithType = ClientDto & { type: string };

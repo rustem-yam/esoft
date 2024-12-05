@@ -1,56 +1,80 @@
+import { useForm } from "react-hook-form";
 import { useAddClientMutation } from "api/common/clientsApi";
-import Submit from "features/Reused/Submit";
-import { FormContainer, TextFieldElement } from "react-hook-form-mui";
+import { AddClientMutationRequestDto } from "models/clients";
+import { Button } from "@mui/material";
+import { TextFieldElement } from "react-hook-form-mui";
 
 function ClientForm() {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AddClientMutationRequestDto>();
   const [addClient] = useAddClientMutation();
-  const handleSubmit = (data: any) => {
-    console.log(data);
+
+  const onSubmit = (data: AddClientMutationRequestDto) => {
+    console.log("Form data:", data);
     addClient(data);
   };
+
   return (
-    <FormContainer
-      //   defaultValues={{
-      //     name: "",
-      //   }}
-      onSuccess={handleSubmit}
-    >
+    <form onSubmit={handleSubmit(onSubmit)}>
       <TextFieldElement
         fullWidth
         sx={{ my: 1 }}
-        name="lname"
+        name="name"
         label="Last Name"
+        required
+        control={control}
+        error={!!errors.name}
+        helperText={errors.name ? "Last name is required" : ""}
       />
       <TextFieldElement
         fullWidth
         sx={{ my: 1 }}
-        name="fname"
+        name="surname"
         label="First Name"
+        required
+        control={control}
+        error={!!errors.surname}
+        helperText={errors.surname ? "First name is required" : ""}
       />
       <TextFieldElement
         fullWidth
         sx={{ my: 1 }}
-        name="mname"
+        name="patronymic"
         label="Middle Name"
+        control={control}
+        error={!!errors.patronymic}
+        helperText={errors.patronymic ? "Middle name is required" : ""}
       />
       <TextFieldElement
         fullWidth
         sx={{ my: 1 }}
-        name={"email"}
-        label={"Email"}
+        name="email"
+        label="Email"
         required
-        type={"email"}
+        type="email"
+        control={control}
+        error={!!errors.email}
+        helperText={errors.email ? "Valid email is required" : ""}
       />
       <TextFieldElement
         fullWidth
         sx={{ my: 1 }}
-        name={"phone"}
-        label={"Phone"}
+        name="telephone"
+        label="Phone"
         required
-        type={"tel"}
+        type="tel"
+        control={control}
+        error={!!errors.telephone}
+        helperText={errors.telephone ? "Phone number is required" : ""}
       />
-      <Submit />
-    </FormContainer>
+
+      <Button variant="contained" fullWidth sx={{ my: 2 }} type="submit">
+        Submit
+      </Button>
+    </form>
   );
 }
 

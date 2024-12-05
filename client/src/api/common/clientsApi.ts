@@ -10,9 +10,10 @@ const clientsApi = rtkQueryApi.injectEndpoints({
       }),
     }),
     addClient: build.mutation<ClientDto, AddClientMutationRequestDto>({
-      query: () => ({
+      query: (body) => ({
         url: "/clients",
         method: "POST",
+        body,
       }),
     }),
   }),

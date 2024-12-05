@@ -60,6 +60,7 @@ func (s *Server) GetClient(w http.ResponseWriter, r *http.Request) {
 // @Description Получить список всех клиентов.
 // @Tags Clients
 // @Success 200 {array} domain.Client
+// @Failure 404 {object} errdomain.AppError
 // @Failure 500 {object} errdomain.AppError
 // @Router /api/clients [get]
 func (s *Server) GetClients(w http.ResponseWriter, r *http.Request) {

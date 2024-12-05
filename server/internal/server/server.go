@@ -25,6 +25,21 @@ type Server struct {
 	db     *pgxpool.Pool
 }
 
+func enableCORS(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
 func New(l *zap.Logger, c *config.Config) (*Server, error) {
 	s := &Server{
 		logger: l,
@@ -32,7 +47,6 @@ func New(l *zap.Logger, c *config.Config) (*Server, error) {
 	}
 
 	conn, err := database.NewMySQLConnection(s.cfg.DatabaseConnection)
-
 	if err != nil {
 		return nil, err
 	}
@@ -46,9 +60,11 @@ func New(l *zap.Logger, c *config.Config) (*Server, error) {
 func (s *Server) Run() error {
 	router := s.initRoutes()
 
+	handler := enableCORS(router)
+
 	httpServer := &http.Server{
 		Addr:    s.cfg.AppPort,
-		Handler: router,
+		Handler: handler,
 	}
 
 	// Graceful Shutdown
